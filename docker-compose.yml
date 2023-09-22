@@ -1,0 +1,38 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    networks:
+      - testNet
+  db:
+    container_name: db
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+      - POSTGRES_DB=db_quiz_portal
+    networks:
+      - testNet
+
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    ports:
+      - "5051:80"
+    networks:
+      - testNet
+
+networks:
+  testNet:
+volumes:
+  postgres_data:
+
